@@ -1,0 +1,88 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.34.4.
+--
+-- see: https://github.com/sol/hpack
+
+name:           bytecode-web
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/Github username here/bytecode-web#readme>
+homepage:       https://github.com/Github username here/bytecode-web#readme
+bug-reports:    https://github.com/Github username here/bytecode-web/issues
+author:         Author name here
+maintainer:     Author email here
+copyright:      2019 Author name here
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+
+source-repository head
+  type: git
+  location: https://github.com/Github username here/bytecode-web
+
+library
+  exposed-modules:
+      DataTypes
+      Parser
+      RunByteCode
+  other-modules:
+      Paths_bytecode_web
+  hs-source-dirs:
+      src
+  default-extensions:
+      OverloadedStrings
+  build-depends:
+      Stack >=0.4.0
+    , base >=4.7 && <5
+    , bytestring
+    , http-types
+    , ordered-containers
+    , scotty
+    , split
+    , text
+  default-language: Haskell2010
+
+executable bytecode-web-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_bytecode_web
+  hs-source-dirs:
+      app
+  default-extensions:
+      OverloadedStrings
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      Stack >=0.4.0
+    , base >=4.7 && <5
+    , bytecode-web
+    , bytestring
+    , http-types
+    , ordered-containers
+    , scotty
+    , split
+    , text
+  default-language: Haskell2010
+
+test-suite bytecode-web-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_bytecode_web
+  hs-source-dirs:
+      test
+  default-extensions:
+      OverloadedStrings
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      Stack >=0.4.0
+    , base >=4.7 && <5
+    , bytecode-web
+    , bytestring
+    , http-types
+    , ordered-containers
+    , scotty
+    , split
+    , text
+  default-language: Haskell2010
