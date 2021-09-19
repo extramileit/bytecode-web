@@ -1,4 +1,7 @@
-module RunByteCode where
+module RunByteCode
+  (
+      runByteCode
+  ) where
 
 import Data.Text as T
 import Data.Map.Ordered as MO
