@@ -8,8 +8,8 @@ import RunByteCode
 main :: IO ()
 main = do
   putStrLn "Running tests..."
-  assert (foundExpectedResponse $ runByteCode byteCode) "passed runByteCode" "FAIL: runByteCode"
-  putStrLn "done"                                          
+  assert (foundExpectedResponse $ runByteCode byteCode) "passed runByteCode!" "FAIL: runByteCode"
+  putStrLn "done"
 
 assert :: Bool -> String -> String -> IO ()
 assert test passStatement failStatement = if test
@@ -17,14 +17,14 @@ assert test passStatement failStatement = if test
                                           else putStrLn failStatement
 
 foundExpectedResponse :: T.Text -> Bool
-foundExpectedResponse input = isJust (findStringMaybe "return (x + 1) * y" input) 
-                            && isJust (findStringMaybe "f() = 4.0" input)
+foundExpectedResponse input = isJust (findTextMaybe "return (x + 1) * y" input)
+                            && isJust (findTextMaybe "f() = 4.0" input)
 
-findStringMaybe :: Text -> Text -> Maybe Int
-findStringMaybe arg str = case indices arg str of 
+findTextMaybe :: Text -> Text -> Maybe Int
+findTextMaybe arg str = case indices arg str of
                           (idx:_) -> Just idx
                           _ -> Nothing
-                          
+
 inputText :: [T.Text]
 inputText = ["LOAD_VAL 1","WRITE_VAR 'x'","LOAD_VAL 2","WRITE_VAR 'y'",
             "READ_VAR 'x'","LOAD_VAL 1","ADD","READ_VAR 'y'","MULTIPLY","RETURN_VALUE"]
@@ -32,4 +32,3 @@ inputText = ["LOAD_VAL 1","WRITE_VAR 'x'","LOAD_VAL 2","WRITE_VAR 'y'",
 byteCode :: ByteCode
 byteCode = toByteCode inputText
 
-                          
