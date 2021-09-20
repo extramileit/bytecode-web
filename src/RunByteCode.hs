@@ -15,6 +15,7 @@ runByteCode bc = makeFunction bc
                  <> "f() = "
                  <> T.pack (show (evaluateFunction bc))
                  <> "\n"
+                   
 
 makeFunction :: ByteCode -> T.Text
 makeFunction bc = "function f() {\n"
@@ -45,7 +46,19 @@ makeReturnExpression bc = Prelude.foldl applyCommand "" (operationCommands bc)
                 isTrailingAddOrSubtract :: T.Text -> Bool
                 isTrailingAddOrSubtract input = not (T.null input)
                             && ('+' == lastOperator (T.unpack input) || '-' == lastOperator (T.unpack input))
-                       
+          
+          displayMathOpSymbol :: MathOp -> T.Text
+          displayMathOpSymbol ADD = "+"
+          displayMathOpSymbol SUBTRACT = "-"
+          displayMathOpSymbol MULTIPLY = "*"
+          displayMathOpSymbol DIVIDE = "/"
+          displayMathOpSymbol _ = ""
+          
+          expressionFragment :: OperationCommand -> T.Text
+          expressionFragment (Binomial mathOp arg1 arg2) = arg1 <> constSpace <> displayMathOpSymbol mathOp <> constSpace <> arg2
+          expressionFragment (Partial mathOp arg1) = displayMathOpSymbol mathOp <> constSpace <> arg1
+          expressionFragment ReturnVal = "return"
+             
           applyCommand accValue operationCmd
             | isReturnValueCommand operationCmd = expressionFragment operationCmd <> " " <> accValue
             | isParensWrapperNeeded accValue operationCmd = "(" <> accValue <> ")" <> " " <> expressionFragment operationCmd
@@ -78,17 +91,6 @@ evaluateFunction bc = Prelude.foldl applyCommand 0.0 opCommands
           applyCommand accValue (Partial mathOp arg1) = evaluate accValue (resolveArgument arg1) mathOp
           applyCommand accValue ReturnVal = accValue
 
-displayMathOpSymbol :: MathOp -> T.Text
-displayMathOpSymbol ADD = "+"
-displayMathOpSymbol SUBTRACT = "-"
-displayMathOpSymbol MULTIPLY = "*"
-displayMathOpSymbol DIVIDE = "/"
-displayMathOpSymbol _ = ""
-
-expressionFragment :: OperationCommand -> T.Text
-expressionFragment (Binomial mathOp arg1 arg2) = arg1 <> constSpace <> displayMathOpSymbol mathOp <> constSpace <> arg2
-expressionFragment (Partial mathOp arg1) = displayMathOpSymbol mathOp <> constSpace <> arg1
-expressionFragment ReturnVal = "return"
 
 checkMultiplyOrDivide :: MathOp -> Bool
 checkMultiplyOrDivide mathOp = MULTIPLY == mathOp || DIVIDE == mathOp
