@@ -115,7 +115,7 @@ the interpeted function body output and the evaluation of the function
             1) a binomial which holds a math operation and two terms,
             2) partial which holds a math operation and one term, and 
             3) ReturnVal which will be the final operation to return
-      Only the first math operation grouping should be binomial.
+        - Note: only the first math operation grouping should be binomial.
     - The result of toByteCode function will construct the ByteCode type defined as follows
       ```
         data ByteCode = ByteCode {
